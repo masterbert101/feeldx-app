@@ -25,9 +25,13 @@
       href: "https://www.feeldx.com/contact-us",
     },
   ];
+
+  let scrollY = $state(0);
 </script>
 
-<div class="header">
+<svelte:window bind:scrollY />
+
+<div class="header" class:addBG={scrollY >= 500}>
   <a class="brand" href="/" aria-label="FeelDX">
     <svg
       width="164"
@@ -126,7 +130,6 @@
 
 <style lang="scss">
   .header {
-    position: absolute;
     width: -webkit-fill-available;
     z-index: 999;
     opacity: 1;
@@ -137,8 +140,29 @@
     justify-content: space-between;
     align-items: center;
     min-height: 90px;
-    padding: 1rem 2rem 0;
+    padding: 0rem 2rem;
     color: #2a2f1e;
+
+    position: fixed;
+    @media only screen and (min-width: 640px) {
+      position: absolute;
+      padding: 1rem 2rem 0;
+    }
+  }
+
+  .addBG {
+    background-color: #fff;
+
+    @media only screen and (min-width: 640px) {
+      background-color: transparent;
+    }
+  }
+
+  .brand {
+    position: fixed;
+    @media only screen and (min-width: 640px) {
+      position: relative;
+    }
   }
 
   .desktop-nav {
@@ -206,7 +230,7 @@
 
     .burger-container {
       position: fixed;
-      top: 40px;
+      top: 25px;
       right: 20px;
       z-index: 1000;
       cursor: pointer;
