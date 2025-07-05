@@ -140,7 +140,7 @@
       position: absolute;
       bottom: 0;
       left: 0;
-      transform: translateX(-120%);
+      transform: translateX(0);
       padding: 0.85rem 2rem;
       border-radius: 999999px;
       margin: 1rem;
@@ -150,12 +150,17 @@
 
       color: #ffff;
       background-color: #2a2f1e;
-    }
 
-    &:hover {
-      .btn {
-        transform: translateX(0);
-        transition: transform 0.5s ease-in-out;
+      @media only screen and (min-width: 640px) {
+        transform: translateX(-120%);
+      }
+    }
+    @media only screen and (min-width: 640px) {
+      &:hover {
+        .btn {
+          transform: translateX(0);
+          transition: transform 0.5s ease-in-out;
+        }
       }
     }
   }
@@ -170,11 +175,19 @@
 
   .slide-in-right {
     transform: translateX(0);
-    transition: transform 3s ease-in-out;
+    transition: transform 1.5s ease-in-out;
+
+    @media only screen and (min-width: 640px) {
+      transition: transform 3s ease-in-out;
+    }
   }
 
   .slide-in-left {
     transform: translateX(0);
-    transition: transform 3s ease-in-out;
+    transition: transform 1.5s ease-in-out;
+
+    @media only screen and (min-width: 640px) {
+      transition: transform 3s ease-in-out;
+    }
   }
 </style>

@@ -1,163 +1,167 @@
 <script>
-	import { onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy } from "svelte";
 
-	let clients = [
-		{ src: '/client1.webp', alt: 'Client 1' },
-		{ src: '/client2.webp', alt: 'Client 2' },
-		{ src: '/client3.webp', alt: 'Client 3' },
-		{ src: '/client4.webp', alt: 'Client 4' },
-		{ src: '/client5.webp', alt: 'Client 5' },
-		{ src: '/client6.webp', alt: 'Client 6' },
-		{ src: '/client7.webp', alt: 'Client 7' },
-		{ src: '/client8.webp', alt: 'Client 8' },
-		{ src: '/client9.webp', alt: 'Client 9' },
-		{ src: '/client10.webp', alt: 'Client 10' },
-		{ src: '/client11.webp', alt: 'Client 11' },
-		{ src: '/client12.webp', alt: 'Client 12' }
-	];
+  let clients = [
+    { src: "/client1.webp", alt: "Client 1" },
+    { src: "/client2.webp", alt: "Client 2" },
+    { src: "/client3.webp", alt: "Client 3" },
+    { src: "/client4.webp", alt: "Client 4" },
+    { src: "/client5.webp", alt: "Client 5" },
+    { src: "/client6.webp", alt: "Client 6" },
+    { src: "/client7.webp", alt: "Client 7" },
+    { src: "/client8.webp", alt: "Client 8" },
+    { src: "/client9.webp", alt: "Client 9" },
+    { src: "/client10.webp", alt: "Client 10" },
+    { src: "/client11.webp", alt: "Client 11" },
+    { src: "/client12.webp", alt: "Client 12" },
+  ];
 
-	let container;
-	let track;
-	let speed = $state(60);
-	let pos = $state(0);
-	let start = $state(null);
-	let rafId;
-	let trackWidth = $state(0);
+  let container;
+  let track;
+  let speed = $state(60);
+  let pos = $state(0);
+  let start = $state(null);
+  let rafId;
+  let trackWidth = $state(0);
 
-	function animate(timestamp) {
-		if (!start) start = timestamp;
+  function animate(timestamp) {
+    if (!start) start = timestamp;
 
-		const elapsed = timestamp - start;
-		pos = -(elapsed / 1000) * speed;
+    const elapsed = timestamp - start;
+    pos = -(elapsed / 1000) * speed;
 
-		if (Math.abs(pos) >= trackWidth) {
-			start = timestamp;
-			pos = 0;
-		}
+    if (Math.abs(pos) >= trackWidth) {
+      start = timestamp;
+      pos = 0;
+    }
 
-		container.style.transform = `translateX(${pos}px)`;
-		rafId = requestAnimationFrame(animate);
-	}
+    container.style.transform = `translateX(${pos}px)`;
+    rafId = requestAnimationFrame(animate);
+  }
 
-	onMount(() => {
-		if (typeof window !== 'undefined') {
-			trackWidth = track.getBoundingClientRect().width;
-			container.style.width = `${trackWidth}px`;
-			rafId = requestAnimationFrame(animate);
-		}
-	});
+  onMount(() => {
+    if (typeof window !== "undefined") {
+      trackWidth = track.getBoundingClientRect().width;
+      container.style.width = `${trackWidth}px`;
+      rafId = requestAnimationFrame(animate);
+    }
+  });
 
-	onDestroy(() => {
-		if (typeof window !== 'undefined') {
-			cancelAnimationFrame(rafId);
-			if (container) container.style.transform = '';
-		}
-	});
+  onDestroy(() => {
+    if (typeof window !== "undefined") {
+      cancelAnimationFrame(rafId);
+      if (container) container.style.transform = "";
+    }
+  });
 </script>
 
 <section class="container">
-	<!-- <div class="title">
+  <!-- <div class="title">
 		<span> Our Clients </span>
 	</div> -->
-	<div class="wrapper">
-		<div class="marquee">
-			<div bind:this={container} class="marquee-container">
-				<div bind:this={track} class="marquee-track">
-					{#each clients as { src, alt }}
-						<div class="marquee-item">
-							<img {src} {alt} />
-						</div>
-					{/each}
-				</div>
-				<!-- duplicate for looping effect -->
-				<div class="marquee-track" aria-hidden="true">
-					{#each clients as { src, alt }}
-						<div class="marquee-item">
-							<img {src} {alt} />
-						</div>
-					{/each}
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="wrapper">
+    <div class="marquee">
+      <div bind:this={container} class="marquee-container">
+        <div bind:this={track} class="marquee-track">
+          {#each clients as { src, alt }}
+            <div class="marquee-item">
+              <img {src} {alt} />
+            </div>
+          {/each}
+        </div>
+        <!-- duplicate for looping effect -->
+        <div class="marquee-track" aria-hidden="true">
+          {#each clients as { src, alt }}
+            <div class="marquee-item">
+              <img {src} {alt} />
+            </div>
+          {/each}
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <style lang="scss">
-	.container {
-		padding: 3rem;
-		position: relative;
+  .container {
+    padding: 2rem 0 0;
+    position: relative;
 
-		display: flex;
-		gap: 1rem;
-		align-items: center;
-	}
+    display: flex;
+    gap: 1rem;
+    align-items: center;
 
-	.title {
-		color: #fff;
-		text-align: center;
-		padding: 1rem 1rem 2rem;
-		width: 400px;
-		span {
-			font-size: 2rem;
-		}
-	}
+    @media only screen and (min-width: 640px) {
+      padding: 3rem;
+    }
+  }
 
-	img {
-		display: block;
-		max-width: 100%;
-		object-fit: cover;
-	}
+  //   .title {
+  //     color: #fff;
+  //     text-align: center;
+  //     padding: 1rem 1rem 2rem;
+  //     width: 400px;
+  //     span {
+  //       font-size: 2rem;
+  //     }
+  //   }
 
-	.wrapper {
-		display: grid;
-		place-content: center;
-		height: 100%;
-	}
+  img {
+    display: block;
+    max-width: 100%;
+    object-fit: cover;
+  }
 
-	.marquee {
-		overflow: hidden;
-		position: relative;
-		mask-image: linear-gradient(
-			var(--mask-direction, to right),
-			hsl(0 0% 0% / 0),
-			hsl(0 0% 0% / 1) 10%,
-			hsl(0 0% 0% / 1) 90%,
-			hsl(0 0% 0% / 0)
-		);
-	}
+  .wrapper {
+    display: grid;
+    place-content: center;
+    height: 100%;
+  }
 
-	.marquee-container {
-		display: flex;
-		width: 100%;
-	}
+  .marquee {
+    overflow: hidden;
+    position: relative;
+    mask-image: linear-gradient(
+      var(--mask-direction, to right),
+      hsl(0 0% 0% / 0),
+      hsl(0 0% 0% / 1) 10%,
+      hsl(0 0% 0% / 1) 90%,
+      hsl(0 0% 0% / 0)
+    );
+  }
 
-	.marquee-track {
-		display: flex;
-	}
+  .marquee-container {
+    display: flex;
+    width: 100%;
+  }
 
-	@supports (-webkit-touch-callout: none) {
-		.marquee-container {
-			transform: translate3d(0, 0, 0) scale(1);
-			perspective: 1px;
-		}
-	}
+  .marquee-track {
+    display: flex;
+  }
 
-	.marquee-item {
-		display: flex;
-		align-items: center;
-		justify-content: center;
+  @supports (-webkit-touch-callout: none) {
+    .marquee-container {
+      transform: translate3d(0, 0, 0) scale(1);
+      perspective: 1px;
+    }
+  }
 
-		flex-shrink: 0;
+  .marquee-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-		width: 160px;
-		margin-inline-end: 3rem;
+    flex-shrink: 0;
 
-		img {
-			height: 160px;
-			width: 100%;
-			object-fit: contain;
-			backface-visibility: hidden;
-			filter: brightness(100%);
-		}
-	}
+    width: 160px;
+    margin-inline-end: 3rem;
+
+    img {
+      height: 160px;
+      width: 100%;
+      object-fit: contain;
+      backface-visibility: hidden;
+      filter: brightness(100%);
+    }
+  }
 </style>
